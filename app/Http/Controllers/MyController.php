@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use Illuminate\Cache\CacheManager;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -56,6 +57,8 @@ class MyController extends Controller
 
 
         //    Блок ELOQUENT !!!!
+
+        //1. Выборки!!
 //        $countries = DB::select('select id, "Name" from country');
 //        dump($countries);
 
@@ -66,9 +69,10 @@ class MyController extends Controller
 //        $countries = Country::query()->find(2, ['id', 'SurfaceArea']);
 //        dump($countries);
 
-        //тут делается тоже, что и в "find()"  но в случае если такой записи нет, то выведет не "null" а страницу с кодом "404"bg
-        $countries = Country::findOrFail(50, ['id', 'SurfaceArea']);
-        dump($countries);
+        //тут делается тоже, что и в "find()"  но в случае если такой записи нет, то выведет не "null",
+        // а страницу с кодом "NOT FOUND, 404"
+//        $countries = Country::findOrFail(50, ['id', 'SurfaceArea']);
+//        dump($countries);
 
 //        $country = Country::query()->first();
 //        dump($country->toArray());
@@ -83,11 +87,25 @@ class MyController extends Controller
 //        dump($countries);
 //        return response()->json($countries);
 
+//        dump('Count: ', Country::query()->get()->count());
+//        dump('Max', Country::query()->get()->max('SurfaceArea'));
+//        dump('Min', Country::query()->get()->where('SurfaceArea','>', 1_000_000)->min('SurfaceArea'));
+//        dump('Avg', Country::query()->get()->avg('SurfaceArea'));
 
-        dump('Count: ', Country::query()->get()->count());
-        dump('Max', Country::query()->get()->max('SurfaceArea'));
-        dump('Min', Country::query()->get()->where('SurfaceArea','>', 1_000_000)->min('SurfaceArea'));
-        dump('Avg', Country::query()->get()->avg('SurfaceArea'));
+
+        //2. Создание новой записи!!
+        //1-й способ
+//        $country = new Country();
+//        $country->Code = 'DGS';
+//        $country->Name = 'USA';
+//        $country->SurfaceArea = '5534532';
+//        dump($country->save()); //dump тут используем для запуска команды save() при открытии базовой страницы
+        //2-й способ
+//        dump(Country::query()->create([
+//            'Code' => 'RRW',
+//            'Name' => 'Canada',
+//            'SurfaceArea' => '9384'
+//        ]));
 
 
         return view('My.index', compact('users2'));
@@ -186,8 +204,42 @@ class MyController extends Controller
 //        dd(app()); //выведет все данные из Service Container
     }
 
-    public function store()
+
+    //Работаем с запросами POST
+    public function store(Request $request)
     {
-        return "MYStore";
+//        var_dump($request->SurfaceArea);
+//        var_dump($request->all(['Code', 'Name'])); //так можем отобрать только те поля, которые нам нужны
+
+        //сохраняем в БД данные пришедшие с Post-запросом
+//        Country::query()->create($request->all());
+
+        return $request;
+    }
+
+    public function update(Request $request){
+// Метод 1
+//        $country = Country::query()->find($request->id);
+//        $country->Code = $request->Code;
+//        $country->Name = $request->Name;
+//        $country->SurfaceArea = $request->SurfaceArea;
+//        $country->save();
+//Метод 2
+        $country = Country::query()->findOrFail($request->id);
+        $country->update($request->all());
+
+        return 'OK';
+    }
+
+    public function destroy(Request $request) //!!!Получается отправить "id" только методом POST, но не DELETE
+    {
+        //Метод 1
+//        $country = Country::query()->find(61);
+//        $country = Country::query()->find($request->id);
+//        $country->delete();
+        //Метод 2
+        Country::destroy($request->id);
+
+        return 'OK';
     }
 }

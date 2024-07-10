@@ -18,8 +18,10 @@ Route::get('/views3', [MyController::class, 'views3']);
 Route::get('/views4', [MyController::class, 'views4']);
 Route::get('/mainView', [MyController::class, 'mainView']);
 Route::get('/bladeDirectives', [MyController::class, 'bladeDirectives']);
-Route::post('/posts', [MyController::class, 'store'])->withoutMiddleware(['auth']);
 Route::get('/getApp', [MyController::class, 'getApp']);
+Route::post('/posts', [MyController::class, 'store'])->withoutMiddleware([VerifyCsrfToken::class]);
+Route::post('/update', [MyController::class, 'update'])->withoutMiddleware([VerifyCsrfToken::class]);
+Route::post('/delete', [MyController::class, 'destroy'])->withoutMiddleware([VerifyCsrfToken::class]); //!!!получается только методом POST(но не DELETE)
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/products', [AdminController::class, 'index'])->name('products.index');
