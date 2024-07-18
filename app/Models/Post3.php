@@ -6,16 +6,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Post extends Model
+class Post3 extends Model
 {
     use HasFactory;
 
-    protected $table = 'posts';
+    protected $table = 'post3_s';
 
     protected $fillable = [
-        'slug',
         'title',
+        'slug',
         'status',
         'content',
     ];
@@ -25,9 +26,11 @@ class Post extends Model
         'updated_at',
     ];
 
-    //Для работы обратной связи при OneToOne
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
+    public function categories(): BelongsToMany{
+        return $this->belongsToMany(Category::class,
+            'category3_s__post3_s',
+            'post3_s_id',
+            'category3_s_id'
+        );
     }
 }

@@ -5,16 +5,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class ForValidMain extends Model
 {
     use HasFactory;
 
-    protected $table = 'categories';
+    protected $table = 'for_valid_mains';
 
     protected $fillable = [
-        'slug',
         'title',
     ];
 
@@ -23,9 +22,9 @@ class Category extends Model
         'updated_at',
     ];
 
- //Для работы прямой связи при OneToOne
-    public function post(): HasOne
+    //Для работы прямой связи при ManyToOne
+    public function forValids(): HasMany
     {
-        return $this->hasOne(Post::class);
+        return $this->hasMany(ForValid::class, 'for_valid_mains_id');
     }
 }

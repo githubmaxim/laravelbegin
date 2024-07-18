@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Post extends Model
+class Post2 extends Model
 {
     use HasFactory;
 
-    protected $table = 'posts';
+    protected $table = 'post2_s';
 
     protected $fillable = [
         'slug',
@@ -25,9 +25,8 @@ class Post extends Model
         'updated_at',
     ];
 
-    //Для работы обратной связи при OneToOne
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
+    //Для работы обратной связи при OneToMany
+    public function category(): BelongsTo{
+        return $this->belongsTo(Category2::class, 'category2_s_id');
     }
 }

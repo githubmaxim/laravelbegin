@@ -5,19 +5,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Post extends Model
+class Category2 extends Model
 {
     use HasFactory;
 
-    protected $table = 'posts';
+    protected $table = 'category2_s';
 
     protected $fillable = [
         'slug',
         'title',
-        'status',
-        'content',
     ];
 
     protected $hidden = [
@@ -25,9 +23,9 @@ class Post extends Model
         'updated_at',
     ];
 
-    //Для работы обратной связи при OneToOne
-    public function category(): BelongsTo
+    //Для работы прямой связи при ManyToOne
+    public function posts(): HasMany
     {
-        return $this->belongsTo(Category::class);
+        return $this->hasMany(Post2::class, 'category2_s_id');
     }
 }

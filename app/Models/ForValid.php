@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Post extends Model
+class ForValid extends Model
 {
     use HasFactory;
 
-    protected $table = 'posts';
+    protected $table = 'for_valids';
 
     protected $fillable = [
-        'slug',
         'title',
-        'status',
         'content',
+        'status',
+        'for_valid_mains_id',
     ];
 
     protected $hidden = [
@@ -25,9 +25,9 @@ class Post extends Model
         'updated_at',
     ];
 
-    //Для работы обратной связи при OneToOne
-    public function category(): BelongsTo
+    //Для работы обратной связи при OneToMany
+    public function forValidMain(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(ForValidMain::class, 'for_valid_mains_id');
     }
 }

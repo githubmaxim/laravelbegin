@@ -3,7 +3,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Category2;
+use App\Models\Category3;
 use App\Models\Country;
+use App\Models\Post;
+use App\Models\Post2;
+use App\Models\Post3;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -33,8 +39,8 @@ class MyController extends Controller
         //        $dd = $users2[3]->name;
 
         //Для получения одного значения чего-то из БД используют метод "scalar":
-        $cnt = DB::scalar('select count(*) from users2'); //получаем количество строк
-        dump($cnt);
+//        $cnt = DB::scalar('select count(*) from users2'); //получаем количество строк
+//        dump($cnt);
 
 //        dump(DB::insert('insert into users2 (name, email, password) values (?, ?, ?)', ['d\'Arc2', 'darc3@mail.com', 555]));
 
@@ -44,6 +50,7 @@ class MyController extends Controller
 //        dump(DB::update('update users2 set created_at = now(), updated_at = ?', [date('Y-m-d H:i:s')]));
 
 //        dump(DB::delete('delete from users2 where id = :id', [':id' => 6]));
+
 
         //ТРАНЗАКЦИЯ
 //        try {
@@ -78,6 +85,9 @@ class MyController extends Controller
 //        dump($country->toArray());
 //        dump($country->Name);
 
+//        $posts = Post::query()->where('category_id', '=', 2)->get();
+//        dump($posts->toArray());
+
 //        $countries = Country::query()
 //            ->where('SurfaceArea','>', 1000_000)
 //            ->orderBy('SurfaceArea', 'desc')
@@ -93,22 +103,145 @@ class MyController extends Controller
 //        dump('Avg', Country::query()->get()->avg('SurfaceArea'));
 
 
-        //2. Создание новой записи!!
-        //1-й способ
+//        //2. Создание новой записи!!
+//        //1-й способ
 //        $country = new Country();
 //        $country->Code = 'DGS';
 //        $country->Name = 'USA';
 //        $country->SurfaceArea = '5534532';
 //        dump($country->save()); //dump тут используем для запуска команды save() при открытии базовой страницы
-        //2-й способ
+//        //2-й способ
 //        dump(Country::query()->create([
 //            'Code' => 'RRW',
 //            'Name' => 'Canada',
 //            'SurfaceArea' => '9384'
 //        ]));
+        //3-й способ, если между таблицами есть связь смотри ниже
 
 
-        return view('My.index', compact('users2'));
+        //  Связи  !!!!
+
+        //1.OneToOne
+//        //Прямая связь(из родителя получаем наследника)
+//        $categories = Category::query()->findOrFail('2');
+//        dump($categories->toArray()); //получаем все
+//        dump($categories->title); //получаем только значение поля "title"
+//        dump($categories->post->toArray());
+//        dump($categories->post->title);
+//        //Обратная связь(из наследника получаем родителя)
+//        $posts = Post::query()->findOrFail(5);
+//        dump($posts->category->toArray());
+//        dump($posts->category->title);
+
+        //2.OneToMany
+//        //Прямая связь(из родителя получаем наследника)
+//        $categories = Category2::query()->findOrFail(1);
+//        // - без наложения дополнительных условий на выборку
+//        dump($categories->toArray());
+//        dump($categories->posts->toArray());
+//        // - с наложением доп.условий через методы "builder", при этом мы эти условия вставляем сразу в запрос
+//        // на выборку и из БД получаем отобранные данные
+//        dump($categories->posts()->where('id', '<>', 4)->orderBy('id', 'desc')->limit(2)->get()->toArray());
+//        // - с наложением доп.условий через методы "Collection", при этом мы эти условия вставляем уже после
+//        // выполнения запроса и получения данных с БД. !!! Такой способ использовать только если нужны какие-то
+//        // спец.методы которых нет в "builder"
+//        dump($categories->posts->where('id', '<>', 4)->toArray());
+//        //Обратная связь(из наследника получаем родителя)
+//        $posts = Post2::query()->findOrFail(4);
+//        dump($posts->category->toArray());
+//        dump($posts->category->title);
+
+    //!!! Создание новой записи при OneToOne/OneToMany просто
+//        Post2::query()->create([
+//            'title' => 'Post 6',
+//            'slug' => 'post-6',
+//            'status' => '1',
+//            'content' => '6111'
+//        ]);
+
+//        //!!! или через связь
+//        $category = Category2::query()->findOrFail(2);
+//        //- 1 запись
+//        $category->posts()->save(new Post2([
+//            'title' => 'Post 6',
+//            'slug' => 'post-6',
+//            'status' => '1',
+//            'content' => '6111'
+//        ]));
+//        //- много записей
+//        $category->posts()->saveMany([
+//            new Post2(['title' => 'Post 6', 'slug' => 'post-6', 'status' => '1', 'content' => '6111']),
+//            new Post2(['title' => 'Post 7', 'slug' => 'post-7', 'status' => '1', 'content' => '7111']),
+//        ]);
+
+        //!!! Изменение связи в таблице через написание кода
+//        $categories = Category::query()->findOrFail(4);
+//        $post = Post::query()->findOrFail(1);
+//        $post->category()->associate($categories);
+//        $post->save();
+
+        //!!! Открепление связи с родительской таблицей для поля дочерней таблицы
+//        $post = Post::query()->findOrFail(1);
+//        $post->category()->dissociate();
+//        $post->save();
+
+
+        //3.ManyToMany
+//        $post = Post3::with('categories')->get(); //вместо метода "all()"
+//        dump($post->toArray());
+
+//        $post = Post3::query()->findOrFail(2);
+//        dump($post->categories->toArray());
+
+//        $categories = Category3::query()->findOrFail(1);
+//        dump($categories->posts->toArray());
+
+
+//        //!!! Перебор данных связанных моделей (не тут конечно, а во "View")должен делаться через выборку методом "with()", а
+//        // не через "all()". Т.к. в этом случае будет делаться не много SQL-запросов (по одному для каждой строчки в подчиненной
+//        // таблице), а будет делаться один SQL-запрос в котором будут выбраны сразу все строки подчиненной таблицы.
+//        $categories = Category2::all(); //не так
+//        $categories = Category2::with('posts')->get();
+//        foreach ($categories as $category) {
+//            echo $category->title . "<br>";
+//            foreach ($category->posts as $post) {
+//                echo $post->title . "<br>";
+//            }
+//            echo "<hr>";
+//        }
+        //Таким же образом проводится Подсчет количества связанных дочерних записей для каждой родительской
+//        $categories = Category2::query()->withCount('posts')->get();
+//        foreach ($categories as $category) {
+//            echo "{$category->title} ({$category->posts_count}) <br>";
+//        }
+
+
+        //!!! Создание связи поля с полем другой таблицы
+//        $post = Post3::query()->findOrFail(3);
+        //одной связи
+//        $post->categories()->attach(2);
+        //нескольких связей
+//        $post->categories()->attach([1, 2, 3]); //!!!!но если какая-то из этих связей уже есть, то вылетит
+// ошибка. Поэтому лучше воспользоваться методом "sync"!!!!:
+//        $post->categories()->sync([1, 2, 3]); //этот метод добавит только те связи которых еще нет
+
+
+        //!!! Открепление связей
+//        $post = Post3::query()->findOrFail(2);
+        //одной связи
+//        $post->categories()->detach(2);
+        //нескольких связей
+//        $post->categories()->detach([1, 2, 3]);
+
+        //!!!одновременное Создание новых + открепление старых связей
+//        $post = Post3::query()->findOrFail(2);
+//        $post->categories()->toggle([1, 2, 3, 8]);
+
+
+
+
+
+//        return view('My.index', compact('users2'));
     }
 
     public function views1()
@@ -217,7 +350,8 @@ class MyController extends Controller
         return $request;
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
 // Метод 1
 //        $country = Country::query()->find($request->id);
 //        $country->Code = $request->Code;
