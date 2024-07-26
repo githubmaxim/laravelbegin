@@ -11,13 +11,15 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
 
-    //место где хранятся адреса, которые будут исключены из CSRF проверки и поэтому
-    //при переходе на них не выдадут 419 ошибку
-    ->withMiddleware(function (Middleware $middleware) {
+    //промежуточный слой для настройки безопасности:
+    //указываются адреса, которые будут исключены из CSRF проверки и поэтому при переходе на них не выдадут 419 ошибку,
+        ->withMiddleware(function (Middleware $middleware) {
         $middleware->validateCsrfTokens(except: [
             '/posts',
             '/admin/products', //или тут или прямо в "web.php" через "->withoutMiddleware(VerifyCsrfToken::class)"
         ]);
+        //указывается путь, куда будет перенаправлен неаутентифицированный пользователь (по умолчанию '/login')
+        $middleware->redirectGuestsTo('forAutent/login');
     })
 
     ->withExceptions(function (Exceptions $exceptions) {

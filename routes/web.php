@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ForAutentController;
 use App\Http\Controllers\ForValidController;
 use App\Http\Controllers\MyController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 //Route::get('/', function () {
@@ -45,6 +47,27 @@ Route::prefix('forValid')->name('forValid.')->group(function () {
 });
 
 
-
+Route::prefix('forAutent')->name('forAutent.')->group(function () {
+//    Route::get('/login', [ForAutentController::class, 'getLogin'])->name('login');
+    Route::get('/login', function (){
+        if (Auth::check()) {
+            return redirect()->route('forAutent.private');
+        }
+        return view('forAutentification.login');
+    })->name('login');
+    Route::post('/login', [ForAutentController::class, 'postLogin'])->name('login.post');
+    Route::get('/logout', [ForAutentController::class, 'getLogout'])->name('logout');
+//    Route::get('/registrat', [ForAutentController::class, 'registrat'])->name('registrat');
+    Route::get('/registrat', function (){
+        if (Auth::check()) {
+            return redirect()->route('forAutent.private');
+        }
+        return view('forAutentification.registrat');
+    })->name('registrat');
+    Route::post('/registrat', [ForAutentController::class, 'registrat'])->name('registrat.post');
+    Route::get('/private', [ForAutentController::class, 'private'])->middleware('auth:web')->name('private');
+//    Route::get('/private', [ForAutentController::class, 'private'])->middleware('auth.basic')->name('private');
+//    Route::get('/private', [ForAutentController::class, 'private'])->name('private');
+});
 
 

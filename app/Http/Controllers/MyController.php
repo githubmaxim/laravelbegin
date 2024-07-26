@@ -30,11 +30,11 @@ class MyController extends Controller
         //1. у нас много данных
 //        $users2 = DB::select('select id, name, email from users2 where id > :id and name != :name', ['id'=>1, 'name'=>'Kleo']);
         // 2. у нас уже есть массив готовых данных, которые нужно просто подставить
-        $data = [
-            'id' => 1,
-            'name' => 'Kleo',
-        ];
-        $users2 = DB::select('select id, name, email from users2 where id > :id and name != :name', $data);
+//        $data = [
+//            'id' => 1,
+//            'name' => 'Kleo',
+//        ];
+//        $users2 = DB::select('select id, name, email from users2 where id > :id and name != :name', $data);
 
         //        $dd = $users2[3]->name;
 
@@ -190,11 +190,11 @@ class MyController extends Controller
 //        $post = Post3::with('categories')->get(); //вместо метода "all()"
 //        dump($post->toArray());
 
-//        $post = Post3::query()->findOrFail(2);
-//        dump($post->categories->toArray());
+//        $pp = Post3::query()->findOrFail(3);
+//        dump($pp->categories->toArray());
 
-//        $categories = Category3::query()->findOrFail(1);
-//        dump($categories->posts->toArray());
+//        $cc = Category3::query()->findOrFail(3);
+//        dump($cc->posts->toArray());
 
 
 //        //!!! Перебор данных связанных моделей (не тут конечно, а во "View")должен делаться через выборку методом "with()", а

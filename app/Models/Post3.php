@@ -27,7 +27,7 @@ class Post3 extends Model
     ];
 
     public function categories(): BelongsToMany{
-        return $this->belongsToMany(Category::class,
+        return $this->belongsToMany(Category3::class,
             'category3_s__post3_s',
             'post3_s_id',
             'category3_s_id'

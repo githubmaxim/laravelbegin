@@ -26,9 +26,12 @@ class ForValidController extends Controller
 //        dump($request->all('title', 'content'));
 //        dump($request->title);
 //        dump($request->content);
-//        ForValid::create($request->validate());
-        ForValid::query()->create($request->all());
-        return redirect()->route('forValid.create')->with('message', 'For validation successful!');
+
+        //Два способа написания сохранения записи с предшествующей валидацией
+        ForValid::create($request->validate());
+//        ForValid::query()->create($request->all());
+
+        return redirect()->route('forValid.create')->with('message', 'For validation successful!'); //в случае успешного создания записи клиента вернет на страницу и покажет это сообщение
     }
 
 }
