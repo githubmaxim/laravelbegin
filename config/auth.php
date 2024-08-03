@@ -62,14 +62,10 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\ForAutent::class),
-//            'model' => env('AUTH_MODEL', App\Models\User::class),
-        ],
+//            'model' => env('AUTH_MODEL', App\Models\User::class), //модель по умолчанию
+            'model' => env('AUTH_MODEL', App\Models\ForAutent::class), //моя модель для хранения данных аутентификации
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        ],
     ],
 
     /*

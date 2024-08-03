@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ForAutentController;
+use App\Http\Controllers\ForRedisController;
 use App\Http\Controllers\ForValidController;
 use App\Http\Controllers\MyController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -70,4 +71,9 @@ Route::prefix('forAutent')->name('forAutent.')->group(function () {
 //    Route::get('/private', [ForAutentController::class, 'private'])->name('private');
 });
 
+Route::prefix('forRedis')->name('forRedis.')->group(function () {
+    Route::get('/getRedis', [ForRedisController::class, 'index'])->name('index');
+    Route::get('/getRedis/{id}', [ForRedisController::class, 'show'])->name('show');
+
+});
 
