@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::table('posts', function (Blueprint $table) {
             $table->dropForeign(['category_id']);
             $table->dropColumn('category_id');
-//            $table->foreignId('category_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete();
+//            $table->foreignId('category_id')->constrained()->cascadeOnUpdate()->cascadeOnDelete(); //нужно было добавить "->index()", так БД PostgreSQL
+//            // не индексирует автоматически внешние ключи (в отличие от MySQL). Индексация нужна для повышения производительности и точности данных.
         });
     }
 

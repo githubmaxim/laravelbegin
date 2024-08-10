@@ -13,7 +13,7 @@ class ForAutentController extends Controller
 {
     public function private()
     {
-        return view('forAutentification.private');
+        return view('forAuthentication.private');
     }
 
     public function getLogin()
@@ -21,7 +21,7 @@ class ForAutentController extends Controller
         if (Auth::check()) {
             return redirect()->route('forAutent.private');
         }
-        return view('forAutentification.login');
+        return view('forAuthentication.login');
     }
 
     public function postLogin(\Illuminate\Http\Request $request){
@@ -42,13 +42,15 @@ class ForAutentController extends Controller
         return redirect()->route('forAutent.login')->withErrors(['email'=>'Не удалось авторизоваться']);
     }
 
-    public function getLogout(){
-        Auth::logout();
-        dump('logout');
-        return redirect()->route('forAutent.login');
+    public function getRegistrat()
+    {
+        if (Auth::check()) {
+            return redirect()->route('forAutent.private');
+        }
+        return view('forAuthentication.registrat');
     }
 
-    public function registrat(ForAutentRequest $request){
+    public function postRegistrat(ForAutentRequest $request){
         if(Auth::check()){
             return redirect()->route('forAutent.private');
         }
@@ -68,11 +70,10 @@ class ForAutentController extends Controller
         return redirect()->route('forAutent.login')->withErrors(['formError'=>'Произошла ошибка при сохранении пользователя']);
     }
 
-
-
-
-
-
-
+    public function getLogout(){
+        Auth::logout();
+        dump('logout');
+        return redirect()->route('forAutent.login');
+    }
 
 }

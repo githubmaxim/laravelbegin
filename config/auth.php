@@ -63,7 +63,8 @@ return [
         'users' => [
             'driver' => 'eloquent',
 //            'model' => env('AUTH_MODEL', App\Models\User::class), //модель по умолчанию
-            'model' => env('AUTH_MODEL', App\Models\ForAutent::class), //моя модель для хранения данных аутентификации
+//            'model' => env('AUTH_MODEL', App\Models\ForAutent::class), //моя модель для хранения данных аутентификации
+            'model' => env('AUTH_MODEL', App\Models\ForCacheUser::class), //моя модель для хранения данных аутентификации
 
         ],
     ],

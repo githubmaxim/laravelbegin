@@ -20,7 +20,8 @@ return new class extends Migration {
             $table->string('content')->nullable();
             $table->integer('status')->nullable();
             $table->timestamps();
-            $table->foreignId('for_valid_mains_id')->constrained();
+            $table->foreignId('for_valid_mains_id')->constrained(); //нужно было добавить "->index()", так БД PostgreSQL
+            // не индексирует автоматически внешние ключи (в отличие от MySQL). Индексация нужна для повышения производительности и точности данных.
         });
     }
 

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ForAutentController;
+use App\Http\Controllers\ForCacheController;
 use App\Http\Controllers\ForRedisController;
 use App\Http\Controllers\ForValidController;
 use App\Http\Controllers\MyController;
@@ -28,6 +29,7 @@ Route::post('/update', [MyController::class, 'update'])->withoutMiddleware([Veri
 Route::post('/delete', [MyController::class, 'destroy'])->withoutMiddleware([VerifyCsrfToken::class]); //!!!получается только методом POST(но не DELETE)
 
 
+
 Route::prefix('admin')->name('admin.')->group(function () { //в "prefix" начальные буквы для "uri", в "name" начальные буквы для "name"
     Route::get('/products', [AdminController::class, 'index'])->name('products.index'); //мы через метод "route()"
     // и это имя в контроллере можем получить полный адрес страницы. Т.е. даже если измениться название контроллера или URI
@@ -42,38 +44,58 @@ Route::prefix('admin')->name('admin.')->group(function () { //в "prefix" нач
 //Route::resource('products', 'App\Http\Controllers\Admin\AdminController')->only('index', 'show');
 });
 
+
+
 Route::prefix('forValid')->name('forValid.')->group(function () {
     Route::get('/create', [ForValidController::class, 'create'])->name('create');
     Route::post('/store', [ForValidController::class, 'store'])->name('sttore');
 });
 
 
+
 Route::prefix('forAutent')->name('forAutent.')->group(function () {
-//    Route::get('/login', [ForAutentController::class, 'getLogin'])->name('login');
-    Route::get('/login', function (){
-        if (Auth::check()) {
-            return redirect()->route('forAutent.private');
-        }
-        return view('forAutentification.login');
-    })->name('login');
+    Route::get('/login', [ForAutentController::class, 'getLogin'])->name('login');
     Route::post('/login', [ForAutentController::class, 'postLogin'])->name('login.post');
-    Route::get('/logout', [ForAutentController::class, 'getLogout'])->name('logout');
-//    Route::get('/registrat', [ForAutentController::class, 'registrat'])->name('registrat');
-    Route::get('/registrat', function (){
-        if (Auth::check()) {
-            return redirect()->route('forAutent.private');
-        }
-        return view('forAutentification.registrat');
-    })->name('registrat');
-    Route::post('/registrat', [ForAutentController::class, 'registrat'])->name('registrat.post');
+
+    Route::get('/registrat', [ForAutentController::class, 'getRegistrat'])->name('registrat');
+    Route::post('/registrat', [ForAutentController::class, 'postRegistrat'])->name('registrat.post');
+
     Route::get('/private', [ForAutentController::class, 'private'])->middleware('auth:web')->name('private');
 //    Route::get('/private', [ForAutentController::class, 'private'])->middleware('auth.basic')->name('private');
 //    Route::get('/private', [ForAutentController::class, 'private'])->name('private');
+
+    Route::get('/logout', [ForAutentController::class, 'getLogout'])->name('logout');
 });
+
+
 
 Route::prefix('forRedis')->name('forRedis.')->group(function () {
     Route::get('/getRedis', [ForRedisController::class, 'index'])->name('index');
     Route::get('/getRedis/{id}', [ForRedisController::class, 'show'])->name('show');
-
 });
+
+
+
+//!!!!!!   Route::withoutMiddleware('auth:web')->group(function () {})  //так мы для всех адресов сразу требуем аутентификацию !!!!!!
+
+
+
+  Route::prefix('forCache')->name('forCache.')->group(function () {
+      Route::get('/create', [ForCacheController::class, 'store'])->name('create');
+
+      Route::get('/login', [ForCacheController::class, 'getLogin'])->name('login');
+      Route::post('/login', [ForCacheController::class, 'postLogin'])->name('login.post');
+
+      Route::get('/registrat', [ForCacheController::class, 'getRegistrat'])->name('registrat');
+      Route::post('/registrat', [ForCacheController::class, 'postRegistrat'])->name('registrat.post');
+
+      Route::get('/private', [ForCacheController::class, 'private'])->middleware('auth:web')->name('private');
+
+      Route::get('/logout', [ForCacheController::class, 'getLogout'])->name('logout');
+
+      Route::post('/create', [ForCacheController::class, 'store'])->name('store');
+
+  });
+
+
 

@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\ForAutent;
+use App\Models\ForCacheUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
-class ForAutentFactory extends Factory
+class ForCacheUserFactory extends Factory
 {
-    protected $model = ForAutent::class;
+    protected $model = ForCacheUser::class;
 
     public function definition(): array
     {
