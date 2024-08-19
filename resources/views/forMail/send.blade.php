@@ -18,16 +18,10 @@
     {{--    <link href="{{ asset('css/app.css') }}">--}}
 
 
-    <title> private </title>
+    <title> login </title>
 </head>
 
 <body>
-<h1>Это приватная страница</h1>
-<p>Сюда попадают только аутентифицированные пользователи</p>
-
-<script>
-    Echo.private(`channel-name`)
-        .listen('MyEvent', (e) => {
-            console.log(e.order);
-        });
-</script>
+<h1>Почтовое сообщение</h1>
+<h1>отправляю на эл.адрес: {{$forMail->email}}</h1>
+</body>

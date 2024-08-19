@@ -16,7 +16,7 @@ class EventServiceProvider extends ServiceProvider
      */
     //это событие (Registered::class) и обработчик событий (SendEmailVerificationNotification::class) являются
     // внутренними встроенными классами, и их регистрация тут нужна для автоматической отправки клиенту
-    // сообщения на его почту об успешной аутентификации на нашем сайте (кроме этого, я думаю, нужно еще настроить почту в файле ".env" и еще где-то???)
+    // на его почту ссылку для подтверждения адреса электронной почты. (кроме этого нужно еще настроить почту в файлах ".env" и "mail.php")
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,

@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ForAutentController;
 use App\Http\Controllers\ForCacheController;
+use App\Http\Controllers\ForMailController;
 use App\Http\Controllers\ForRedisController;
 use App\Http\Controllers\ForValidController;
 use App\Http\Controllers\MyController;
@@ -95,6 +96,11 @@ Route::prefix('forRedis')->name('forRedis.')->group(function () {
 
       Route::post('/create', [ForCacheController::class, 'store'])->name('store');
 
+  });
+
+
+  Route::prefix('forMail')->name('forMail.')->group(function () {
+      Route::get('/show', [ForMailController::class, 'show'])->name('show');
   });
 
 
