@@ -13,15 +13,16 @@ class ForAutentController extends Controller
 {
     public function private()
     {
-        return view('forAuthentication.private');
+        return view('forAuthentication.privateAut');
     }
 
     public function getLogin()
     {
         if (Auth::check()) {
+            dump(Auth::user());
             return redirect()->route('forAutent.private');
         }
-        return view('forAuthentication.login');
+        return view('forAuthentication.loginAut');
     }
 
     public function postLogin(\Illuminate\Http\Request $request){
@@ -35,7 +36,7 @@ class ForAutentController extends Controller
         //"attempt" проверяет наличие связки таких данных в таблице
         if (Auth::attempt($formFields, $remember)) {
 
-            //метод "intended" вначале пробует вернуть страницу к которой мы пытались изначально обратиться,
+            //метод "intended" вначале пробует вернуть страницу к которой пользователь пытался изначально обратиться,
             // и если не выходит то тогда на выбранную нами страницу
             return redirect()->intended(route('forAutent.private'));
         }
@@ -47,7 +48,7 @@ class ForAutentController extends Controller
         if (Auth::check()) {
             return redirect()->route('forAutent.private');
         }
-        return view('forAuthentication.registrat');
+        return view('forAuthentication.registratAut');
     }
 
     public function postRegistrat(ForAutentRequest $request){

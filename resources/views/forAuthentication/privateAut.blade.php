@@ -24,10 +24,3 @@
 <body>
 <h1>Это приватная страница</h1>
 <p>Сюда попадают только аутентифицированные пользователи</p>
-
-<script>
-    Echo.private(`channel-name`)
-        .listen('MyEvent', (e) => {
-            console.log(e.order);
-        });
-</script>

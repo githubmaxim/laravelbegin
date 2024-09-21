@@ -13,7 +13,7 @@ class ForCacheAutent extends Model implements Authenticatable
     use HasFactory;
     use \Illuminate\Auth\Authenticatable;
 
-    protected $table = 'for_cache_autents';
+    protected $table = 'for_cache_users';
 
     protected $fillable = [
         'email',

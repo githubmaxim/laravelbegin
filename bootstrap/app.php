@@ -18,9 +18,11 @@ return Application::configure(basePath: dirname(__DIR__))
             '/posts',
             '/admin/products', //или тут или прямо в "web.php" через "->withoutMiddleware(VerifyCsrfToken::class)"
         ]);
-        //указывается путь, куда будет перенаправлен неаутентифицированный пользователь (по умолчанию '/login')
-        $middleware->redirectGuestsTo('forAutent/login');
+
+    //указывается путь, куда будет перенаправлен неаутентифицированный пользователь (по умолчанию '/login')
+        $middleware->redirectGuestsTo('forCache/login');
     })
+
 
     ->withExceptions(function (Exceptions $exceptions) {
         //

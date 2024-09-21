@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->integer('status')->default(0);
             $table->string('content')->nullable();
             $table->timestamps();
-            $table->foreignId('category2_s_id')->constrained(); //нужно было добавить "->index()", так БД PostgreSQL
+            $table->foreignId('category2_s_id')->constrained(); //нужно было добавить "->index()", так как БД PostgreSQL
             // не индексирует автоматически внешние ключи (в отличие от MySQL). Индексация нужна для повышения производительности и точности данных.
         });
     }

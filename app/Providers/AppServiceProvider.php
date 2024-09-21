@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \Illuminate\Support\Facades\View::share('myVariable', 'valueMyVariable');
+        \Illuminate\Support\Facades\View::share('myVariable', 'valueMyVariable'); //переменная 'myVariable' со значением 'valueMyVariable' будет доступна всем View
     }
 }
