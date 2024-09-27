@@ -1,0 +1,42 @@
+<?php
+declare(strict_types=1);
+
+namespace App\Policies\Polymorph;
+
+use App\Models\ForCacheUser;
+use App\Models\Polymorph\Videooo;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class VideoooPolicy
+{
+    use HandlesAuthorization;
+
+//    public function viewAny(ForCacheUser $user): bool
+//    {
+//
+//    }
+//
+//    public function view(ForCacheUser $user, Videooo $videooo): bool
+//    {
+//    }
+//
+//    public function create(ForCacheUser $user): bool
+//    {
+//    }
+//
+//    public function update(ForCacheUser $user, Videooo $videooo): bool
+//    {
+//    }
+//
+//    public function delete(ForCacheUser $user, Videooo $videooo): bool
+//    {
+//    }
+//
+//    public function restore(ForCacheUser $user, Videooo $videooo): bool
+//    {
+//    }
+//
+//    public function forceDelete(ForCacheUser $user, Videooo $videooo): bool
+//    {
+//    }
+}

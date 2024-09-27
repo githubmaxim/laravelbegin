@@ -7,6 +7,7 @@ use App\Http\Controllers\ForMailController;
 use App\Http\Controllers\ForRedisController;
 use App\Http\Controllers\ForValidController;
 use App\Http\Controllers\MyController;
+use App\Http\Controllers\MyPolymorphController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -99,8 +100,15 @@ Route::prefix('forRedis')->name('forRedis.')->group(function () {
   });
 
 
+
   Route::prefix('forMail')->name('forMail.')->group(function () {
       Route::get('/show', [ForMailController::class, 'show'])->name('show');
+  });
+
+
+
+  Route::prefix('forPolymorph')->name('forPolymorph.')->group(function () {
+     Route::get('/show', [MyPolymorphController::class, 'show'])->name('show');
   });
 
 
