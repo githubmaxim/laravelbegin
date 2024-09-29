@@ -3,22 +3,20 @@ declare(strict_types=1);
 
 namespace Database\Factories\Polymorph;
 
-use App\Models\Polymorph\Commentoo;
+use App\Models\Polymorph\Imagemm;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class CommentooFactory extends Factory
+class ImagemmFactory extends Factory
 {
-    protected $model = Commentoo::class;
+    protected $model = Imagemm::class;
 
     public function definition(): array
     {
         return [
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'body' => $this->faker->word(),
-            'commentable_id' => $this->faker->randomNumber(),
-            'commentable_type' => $this->faker->word(),
+            'name' => $this->faker->name(),
         ];
     }
 }

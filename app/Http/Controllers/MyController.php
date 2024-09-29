@@ -51,6 +51,9 @@ class MyController extends Controller
 
 //        dump(DB::delete('delete from users2 where id = :id', [':id' => 6]));
 
+        //Запрос для связей ManyToMany !!!!!!
+        //$data = DB::select('select u.id, u.name, r.role from users as u inner join role_user as ru on ru.user_id = u.id inner join roles as r on r.id = ru.role_id');
+
 
         //ТРАНЗАКЦИЯ
 //        try {
@@ -187,6 +190,8 @@ class MyController extends Controller
 
 
         //3.ManyToMany
+        //$data = DB::select('select u.id, u.name, r.role from users as u inner join role_user as ru on ru.user_id = u.id inner join roles as r on r.id = ru.role_id');
+
 //        $post = Post3::with('categories')->get(); //вместо метода "all()"
 //        dump($post->toArray());
 
