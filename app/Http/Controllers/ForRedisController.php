@@ -19,7 +19,7 @@ class ForRedisController extends Controller
             return ForRedis::all();
         });
 //        dd($posts->select('title')); //вернет 100 массивов по 1 значению в каждом
-        dd($posts->pluck('title')); //извлекает все значения из таблицы по заданному ключу невзирая на выборку: вернет 1 массив со 100 значениями
+        dd($posts->pluck('title')); //(извлекает все значения из таблицы по заданному ключу невзирая на выборку:) вернет 1 массив со 100 значениями
     }
 
     public function show($id){ //в методе "show" нужно использовать не метод "remember", а метод "get()"
