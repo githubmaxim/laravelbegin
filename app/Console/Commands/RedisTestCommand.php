@@ -38,6 +38,7 @@ class RedisTestCommand extends Command
 //  Тренируемся правильно получать данные из Redis-таблицы
 //        $str = 'some thing2';
 //        $result = Cache::remember('example',60*60, function () use ($str) {     //"use()" используется для получения доступа к переменной "$str" внутри функции
+                                                                                  //  60*60 это время в секундах (1 час) сколько эти данные будут храниться на сервере Redis
 //            return $str;
 //        });
 //        $result = Cache::rememberForever('example', function () use ($str) {
@@ -116,6 +117,6 @@ class RedisTestCommand extends Command
 
 
 
-        
+
     }
 }

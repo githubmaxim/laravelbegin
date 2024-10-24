@@ -14,7 +14,7 @@ class ForRedisController extends Controller
 //        $posts = Cache::remember('for_redis:all', 60*60, function () {   //!!!!! создаст в кэш-таблице папку "laravelbegin" (так написано
 // // в "config/database.php" в параметре "'prefix' => env('REDIS_PREFIX').':',"  где 'REDIS_PREFIX' берется из файла ".env"), в ней подпапку
 // // с именем идущим до ":" - "for_redis" и потом запись в кэш-таблице с ключем со всеми словами и двоеточиями сразу "laravelbegin:for_redis:all"
-// // и значением которое выведет вложенная функция !!!!!
+// // и значением которое выведет вложенная функция !!!!!  60*60 это время в секундах (1 час) сколько эти данные будут храниться на сервере Redis
         $posts = Cache::rememberForever('for_redis:all', function () {
             return ForRedis::all();
         });
