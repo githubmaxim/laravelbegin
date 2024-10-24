@@ -29,9 +29,9 @@ class RedisTestCommand extends Command
     public function handle()
     {
 //  Тренируемся заполнять данные в Redis-таблицу
-//        Cache::put('example', 'Hello World');
-//        Cache::put('example', 'no Hello World');
-//        Cache::forget('example');
+//        Cache::put('example', 'Hello World'); //сохраняем в Redis в таблицу DB1 ключ/значение
+//        Cache::put('example', 'no Hello World'); //перезаписываем значение для ключа "example"
+//        Cache::forget('example'); //удаляем запись с ключом "example" и его значением
 
 
 
