@@ -44,8 +44,9 @@ class RedisTestCommand extends Command
 //                                                                            // - "use()" используется для получения доступа к переменной "$str" внутри функции
 //                                                                            // - 60*60 это время в секундах (1 час) сколько эти данные будут храниться на сервере Redis
 //            return $str;
+//       //return ForRedis::all(); //выведет значение всех данных этой модели + сохранит в Redis все эти данные под ключем "example"
 //        });
-//        $result = Cache::rememberForever('example', function () use ($str) {
+//        $result = Cache::rememberForever('example', function () use ($str) { //хранить вечно
 //            return $str;
 //        });
 
