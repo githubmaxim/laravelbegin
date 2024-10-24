@@ -22,7 +22,7 @@ class ForRedisController extends Controller
         dd($posts->pluck('title')); //извлекает все значения из таблицы по заданному ключу невзирая на выборку: вернет 1 массив со 100 значениями
     }
 
-    public function show($id){
+    public function show($id){ //в методе "show" нужно использовать не метод "remember", а метод "get()"
         if (!Cache::has('for_redis:'.$id)) { // Проверяем наличие в такой подпапке такой записи в Redis в таблице DB1 (потому что использовали фасад "Cache". Если бы фасад "Redis", то искало бы в таблице DB0)
             return 'No id = '.$id;
 //            return redirect();
