@@ -23,7 +23,7 @@ class ForRedisController extends Controller
     }
 
     public function show($id){
-        if (!Cache::has('for_redis:'.$id)) {
+        if (!Cache::has('for_redis:'.$id)) { // Проверяем наличие в такой подпапке такой записи в Redis в таблице DB1 (потому что использовали фасад "Cache". Если бы фасад "Redis", то искало бы в таблице DB0)
             return 'No id = '.$id;
 //            return redirect();
         }
