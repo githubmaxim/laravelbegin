@@ -5,12 +5,15 @@ namespace App\Console\Commands;
 
 use App\Models\ForMail;
 use Illuminate\Console\Command;
+use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 
 class MailTestCommand extends Command
 {
     protected $signature = 'mail:go';
 
     protected $description = 'Command description';
+
 
     public function handle(): void
     {
