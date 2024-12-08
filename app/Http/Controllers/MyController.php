@@ -68,7 +68,7 @@ class MyController extends Controller
 
         //    Блок ELOQUENT !!!!
 
-        //1. Выборки!!
+        //1. Выборки!!!!!
 //        $countries = DB::select('select id, "Name" from country');
 //        dump($countries);
 
@@ -83,6 +83,10 @@ class MyController extends Controller
         // а страницу с кодом "NOT FOUND, 404"
 //        $countries = Country::findOrFail(50, ['id', 'SurfaceArea']);
 //        dump($countries);
+
+//        $country = Country::select('id')->get(); //выводит, обернутый в "Collection", массив коллекций, в каждой вся информация по коллекции + из полей только выбранное поле "id"
+//        $country = Country::pluck('id'); //выводит, обернутый в "Collection", массив значений по полю "id"
+//        $country = Country::pluck('id')->toArray(); //выводит массив значений по полю "id"
 
 //        $country = Country::query()->first();
 //        dump($country->toArray());
@@ -104,6 +108,30 @@ class MyController extends Controller
 //        dump('Max', Country::query()->get()->max('SurfaceArea'));
 //        dump('Min', Country::query()->get()->where('SurfaceArea','>', 1_000_000)->min('SurfaceArea'));
 //        dump('Avg', Country::query()->get()->avg('SurfaceArea'));
+
+
+
+//        $countries = Country::all()->toArray();
+//            $countries = Country::all(['Name'])->toArray();
+//            $countries = Country::all(['created_at'])->toArray(); //это поле для не дает при переводе в Json или при использовании метода "toArray()" потому, что в модели оно "hidden"
+//            dd($countries);
+
+//            $countries = Country::query()->first(['created_at', 'Name']);
+//            $countries = Country::query()->first();
+//            dump('countries = ', $countries->Name);
+//            dd('countries = ', $countries->created_at->toDateTimeString());
+
+//            $countries = Country::query()->where('Name', 'Tunisia')->get();
+//            dump('countries = ', $countries[0]->Name);
+//            dd('countries[0][Name] = ', $countries[0]['Name']);//или так
+
+//            $countries = Country::query()->where('Name', 'Tunisia')->get()->toArray();
+//            dd('countries = ', $countries[0]['Name']);
+
+//            dump('toDate() =', $countries->created_at->toDate());
+//            dump("toDateString() = ", $countries->created_at->toDateString());
+//            dump("toDateTime() = ", $countries->created_at->toDateTime());
+//            dd("toDateTimeString() = ", $countries->created_at->toDateTimeString());
 
 
 //        //2. Создание новой записи!!

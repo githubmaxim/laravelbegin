@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Models\Country;
+use Faker\Guesser\Name;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -20,11 +22,10 @@ class WorkWithArrayCommand extends Command
                 "country.Code",
                 "country.SurfaceArea",
                 "country.created_at")
-            ->limit(2)
+            ->limit(3)
 //            ->take(2) //или так
             ->get();
-//        echo "query_items = ";
-//        dump($query_items);
+//        dd("query_items = ", $query_items);
 
         $twoitems = [];
         foreach ($query_items as $item) {
@@ -33,10 +34,19 @@ class WorkWithArrayCommand extends Command
                 $item->created_at,
             ];
         }
-//        echo "twoitems = ";
-//        dump($twoitems);
+//        dd("twoitems = ", $twoitems);  // 7 => array:2 [ 0 => 5555, 1 => "2024-07-07 12:21:25"] - сформирован массив массивов
 
-        $group_data2 = ['id', 'Name', 'Code', 'SurfaceArea', 'created_at']; //так я просто заполняю массив ключами со значениями
+        $twoitems = [];
+        foreach ($query_items as $item) {
+            $twoitems[$item->id] = (object)[ //вставляем сюда ключ с номером "id", чтобы потом, при формировании нового массива, можно было вставлять эти значения без лишнего перебора внутри перебора
+                $item->SurfaceArea,
+                $item->created_at,
+            ];
+        }
+//        dd("twoitems2 = ", $twoitems);  // 7 => {#599   +"0": 5555, +"1": "2024-07-07 12:21:25"} - сформирован массив объектов
+
+
+//        $group_data2 = ['id', 'Name', 'Code', 'SurfaceArea', 'created_at']; //так я просто заполняю массив ключами со значениями
         $group_data = [ //так я создаю в массиве еще один массив(подмассив), и уже подмассив заполняю ключами со значениями. И этот подмассив будет с ключем "0".
             ['id', 'Name', 'Code', 'json']
         ];
@@ -52,8 +62,7 @@ class WorkWithArrayCommand extends Command
                 json_encode($twoitems[$item->id]), //так в массиве формируем строку, которая содержит JSON-представление значения (в квадратных скобках, через запятую, выбираются значения текущей строки массива)
             ];
         }
-//        echo "group_data = ";
-//        dump( $group_data);
+//        dd("group_data = ", $group_data);
 
         $data = [
             'camp_id' => 92, //один раз, сверху, в массив добавляем данные этой и следующей строчки
@@ -61,51 +70,118 @@ class WorkWithArrayCommand extends Command
             'csv_data' => array_values($group_data), //меняет мои ключи на ключи по порядку
 //            'csv_data' => $group_data,
         ];
-//        echo "data = ";
-//        dump($data);
+        dd("data = ", $data);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         $column = $data['csv_data'][0]; //берем такой элемент из массива
-        unset($data['csv_data'][0]);
-        echo "column = ";
-        dump($column);
-//        echo "data = ";
-//        dd($data);
-$camp_id = $data['camp_id'];
-//        echo "camp_id = ";
-//        dd($camp_id);
+        unset($data['csv_data'][0]); //удаляем в массиве "data" из подмассива "csv_data" запись с ключом "0"
+//        dump("column = ", $column);
+//        dump("data['csv_data'] = ", $data['csv_data']);
+        $camp_id = $data['camp_id'];
+//        dd("camp_id = ", $camp_id);
 
         $brand_id = $data['brand_id'];
-//        echo "brand_id = ";
-//        dd($brand_id);
+//        dd("brand_id = ", $brand_id);
 
-        $main_columns = ['id', 'name', 'surfacearea'];
+        $main_columns = ['id', 'name', 'delete'];
         $custom_column = [];
         $a = 19;
 //        foreach ($column as $name) {
         foreach ($column as $key => $name) {
             $code = strtolower(str_replace(' ', '_', trim($name)));
-            echo "code = ";
-            dump($code);
+//            echo "code = ";
+//            dump($code);
 //            if (1>1) {
             if (!in_array($code, $main_columns)) {
-                //если такое значение не найдено, то мы, методом "get_customfield" (реальная строчка кода закомментирована) запишем его в таблицу и полученный id-номер записи занесем (как значение) в массив "$custom_column"
+                //если такое значение не найдено, то мы, методом "get_customfield" (реальная строчка кода ниже закомментирована) запишем его в таблицу и полученный id-номер записи занесем (как значение) в массив "$custom_column"
                 $colar = array(
                     'code' => $code,
                     'title' => $name,
                 );
 //                $custom_column[$code] = $this->get_customfield($colar);
                 $custom_column[$code] = $a++;
-                echo "custom_column = ";
-                dump($custom_column);
+//                dump("custom_column = ", $custom_column);
             }
-            //а если такое значение найдено, то мы перезаписываем его с внесенными правками(или без, если и так было так же) в массиве $column
+            //и в любом случае мы перезаписываем значение с внесенным форматированием(или без, если и так было так же) в массив $column
 //            $column = $code; //если писать так, то будет просто менять одно значение на другое
             $column[$key] = $code;
-            dump($column);
+//            dump("column = ", $column);
         }
 
+//        $id_col = 1;
+//        $name_col = 3;
+        $id_col = array_search('id', $column);
+//        dump("id_col = ", $id_col);
+
+        $name_col = array_search('name', $column);
+//        dump("name_col = ", $name_col);
+
+        $code_col = array_search('code', $column);
+
+//        Поля 'email' у меня нет, но так задумано, чтобы если нет - то проверка дальше не пустит работать с этим отсутствующим полем
+        $email_col = array_search('email', $column);
+//        dump("email_col = ", $email_col);
+
+
+//        $for_delete = [[1=>'a', 2=>'b'], [1=>'aa', 2=>'bb']];
+//        dump("for_delete = ", $for_delete);
+//        foreach ($for_delete as $row) {
+//            dump("row = ", $row);
+
+//        foreach ($data as $row) {
+        foreach ($data['csv_data'] as $row) {
+            $new_player_info = [];
+            if (is_numeric($id_col)) {
+//                $new_player_info['id'] = $row[$id_col]; //если $id_col будет цифрой(т.е. мы пройдем проверку в предыдущей строке), но элемента массива на таком месте не будет, то выпадет ошибка
+                $new_player_info['id'] = 6; //если $id_col будет цифрой(т.е. мы пройдем проверку в предыдущей строке), но элемента массива на таком месте не будет, то выпадет ошибка
+            }
+            if (is_numeric($name_col)) {
+                $new_player_info['Name'] = "Peru";
+//                $new_player_info['Name'] = "Korea";
+//                $new_player_info['Name'] = $row[$name_col];
+            }
+            if (is_numeric($code_col)) {
+//                $new_player_info['Code'] = "C";
+                $new_player_info['Code'] = "GR";
+//                $new_player_info['Code'] = $row[$code_col];
+            }
+            if (is_numeric($email_col)) { //т.к. такого элемента в массиве нет, то "$email_col=false" и эта проверка на следующую строку не пустит и ошибка там не вылетит
+                $new_player_info['email'] = $row[$email_col];
+            }
+            if (!count($new_player_info)) { //если на этом шаге массив "$new_player_info" не заполнился ни какими данными, то мы пропускаем код ниже для этого шага цикла и сразу переходим на следующий шаг
+                continue;
+            }
+//            dump("new_player_info = ", $new_player_info);
+
+            $countries = Country::first()->get();
+            $const = $countries[0]->created_at;
+//            $const = $countries[0]->created_at->toDateTimeString();
+
+            //Ищет совпадение значений по полю в первом 'where' + хотя бы по одному из полей, находящихся в массиве "$new_player_info" и тогда выводит всю строку(помещенную "->toArray()" в массив) из коллекции
+            $country = Country::where('created_at', $const)
+                ->where(function ($query) use ($new_player_info) {
+                    foreach ($new_player_info as $name => $value) {
+                        $query->orWhere($name, $value);
+                    }
+                });  //если нет в конце "->get();", томы получаем объект "Illuminate\Database\Eloquent\Builder" и тогда к полям можно обратиться только написав вначале какой-то доп.метод (типа first()) и только потом можно вызвать поле
+//                ->get();
+//                ->toArray();
+//            dd("country = ", $country);
+//            dd($country->first()->id);
+
+
+//            dd(Country::where('Name', 'like','%o%')
+//                ->where('SurfaceArea', '>',1000)
+//                ->orderBy('id')
+//                ->pluck('id')
+//                ->toArray()
+//            );
+
+//            dd(Country::query()->orderBy('updated_at', 'desc')->pluck('updated_at')->toArray());
+//            dd(Country::query()->orderBy('updated_at', 'desc')->pluck('updated_at')->first());
+
+        }
     }
 
 
