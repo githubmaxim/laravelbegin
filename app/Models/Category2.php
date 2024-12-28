@@ -23,7 +23,7 @@ class Category2 extends Model
         'updated_at',
     ];
 
-    //Для работы прямой связи при ManyToOne
+    //Для работы прямой связи при OneToMany
     public function posts(): HasMany
     {
         return $this->hasMany(Post2::class, 'category2_s_id');

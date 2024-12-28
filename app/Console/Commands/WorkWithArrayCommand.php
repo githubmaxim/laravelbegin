@@ -27,13 +27,13 @@ class WorkWithArrayCommand extends Command
             ->get();
 //        dd("query_items = ", $query_items);
 
-        $twoitems = [];
-        foreach ($query_items as $item) {
-            $twoitems[$item->id] = [ //вставляем сюда ключ с номером "id", чтобы потом, при формировании нового массива, можно было вставлять эти значения без лишнего перебора внутри перебора
-                $item->SurfaceArea,
-                $item->created_at,
-            ];
-        }
+//        $twoitems = [];
+//        foreach ($query_items as $item) {
+//            $twoitems[$item->id] = [ //вставляем сюда ключ с номером "id", чтобы потом, при формировании нового массива, можно было вставлять эти значения без лишнего перебора внутри перебора
+//                $item->SurfaceArea,
+//                $item->created_at,
+//            ];
+//        }
 //        dd("twoitems = ", $twoitems);  // 7 => array:2 [ 0 => 5555, 1 => "2024-07-07 12:21:25"] - сформирован массив массивов
 
         $twoitems = [];
@@ -58,8 +58,8 @@ class WorkWithArrayCommand extends Command
                 $item->id,
                 $item->Name,
                 $item->Code,
-//                $twoitems[$item->id], //так формируем в массиве еще один массив(подмассив)
-                json_encode($twoitems[$item->id]), //так в массиве формируем строку, которая содержит JSON-представление значения (в квадратных скобках, через запятую, выбираются значения текущей строки массива)
+                $twoitems[$item->id], //просто вставляем значение из переменной $twoitems ( 3 => {#599  +"0": 5555, +"1": "2024-07-07 12:21:25"} )
+//                json_encode($twoitems[$item->id]), //значение из переменной $twoitems переводится в Json строку ( 3 => "{"0":5555,"1":"2024-07-07 12:21:25"}" )
             ];
         }
 //        dd("group_data = ", $group_data);
@@ -70,7 +70,7 @@ class WorkWithArrayCommand extends Command
             'csv_data' => array_values($group_data), //меняет мои ключи на ключи по порядку
 //            'csv_data' => $group_data,
         ];
-        dd("data = ", $data);
+//        dd("data = ", $data);
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
