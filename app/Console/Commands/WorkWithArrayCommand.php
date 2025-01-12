@@ -16,6 +16,43 @@ class WorkWithArrayCommand extends Command
 
     public function handle(): void
     {
+        $z = [];
+        if ($z){echo'OK';} else{echo'ERROR';};
+        dd();
+
+//        $a=date('Y-m-d',strtotime('-30 days')).' - '.date('Y-m-d');
+//dd($rangeselect_arr = $a ? explode(' - ', $a) : array());
+
+//        $where_case=[];
+//        $where_case[] = ['campaign_id', '=', 0];
+//        dump('where_case = ', $where_case);
+//        $where_case[] = ['created_at', '>=', 2];
+//        dump('where_case = ', $where_case);
+//        $where_case[] = ['qqqted_at', '>=', 3];
+//        dump('where_case = ', $where_case);
+//        $where_case[] = ['created_at', '<=', 1];
+//       dd('where_case = ', $where_case);
+
+//        $a = [];
+//        $a = [
+//            'success' => 'finish',
+//            'callback_s' => 'finish',
+//            'callback' => 'abort',
+//            'wait' => 'abort',
+//            'abndnd' => 'abort',
+//            'not_reachable' => 'abort',
+//            'not_exist' => 'abort',
+//            'bad_connection' => 'abort'
+//        ];
+//        $s = $a['callback_s'];
+//        $day = date("Y-m-d");
+//        $total[$s][$day] = 0;
+//        $total[$s][$day] = (int)$total[$s][$day] + 1;
+//        if (!isset($total['abort'][$day])) $total['abort'][$day] = 0;
+//        dd($total);
+
+
+
         $query_items = DB::table('country')
             ->select("country.id",
                 "country.Name",
